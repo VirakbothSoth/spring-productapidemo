@@ -2,32 +2,80 @@ package co.istad.productapidemo.service;
 
 import co.istad.productapidemo.dto.ProductRequest;
 import co.istad.productapidemo.dto.ProductResponse;
+import co.istad.productapidemo.dto.UpdateProductRequest;
+import co.istad.productapidemo.entity.Product;
 import co.istad.productapidemo.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     // inj le repo
     private final ProductRepository productRepository;
+
+    private Integer nextId = 1004;
+
+    private Product mapToEntity(ProductRequest request) {
+        Product product = new Product();
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        return product;
+    }
+
+    private ProductResponse mapToResponse(Product product) {
+        return new ProductResponse (
+                product.getId(), product.getName(),product.getDescription(), product.getPrice()
+        );
+    }
+
     @Override
-    public ProductResponse createProduct(ProductRequest product) {
-        return null;
+    public ProductResponse createProduct(ProductRequest request) {
+        var product = mapToEntity(request);
+        product.setUserId(1);
+        product.setId(nextId++);
+        return mapToResponse(productRepository.createProduct(product));
     }
 
     @Override
     public List<ProductResponse> findAllProducts() {
-        return List.of();
+        return productRepository.getProductList().stream()
+                .map(this::mapToResponse).toList();
     }
 
     @Override
-    public ProductResponse updateProduct(ProductRequest product) {
-        return null;
+    public ProductResponse findProductById(Integer id) {
+        var product = productRepository.findProductById(id);
+        if (product == null) {
+            return null;
+        }
+        return mapToResponse(product);
     }
 
     @Override
-    public boolean deleteProduct(int id) {
+    public ProductResponse updateProduct(Integer id, UpdateProductRequest request) {
+        var exitingProduct = productRepository.findProductById(id);
+        if (exitingProduct == null) {
+            return null;
+        }
+        if (request.name() != null) {
+            exitingProduct.setName(request.name());
+        }
+        if (request.description() != null) {
+            exitingProduct.setDescription(request.description());
+        }
+        if (request.price() != null) {
+            exitingProduct.setPrice(request.price());
+        }
+        productRepository.updateProduct(exitingProduct);
+        return mapToResponse(exitingProduct);
+    }
+
+    @Override
+    public boolean deleteProduct(Integer id) {
         return false;
     }
 }
