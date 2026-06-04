@@ -1,0 +1,103 @@
+{
+  "info": {
+    "_postman_id": "59608c02-d156-4c6a-9326-79891563711d",
+    "name": "Spring Product RestAPI Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50953814",
+    "_collection_link": "https://go.postman.co/collection/50953814-59608c02-d156-4c6a-9326-79891563711d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get all Categories",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Get specific category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/categories/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "categories",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Change (some) fields in Category",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"isActive\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/categories/1003",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "categories",
+            "1003"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create new Category",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 1004,\r\n    \"name\": \"New Category\",\r\n    \"description\": \"..for what?\",\r\n    \"isActive\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/categories/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "categories",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
