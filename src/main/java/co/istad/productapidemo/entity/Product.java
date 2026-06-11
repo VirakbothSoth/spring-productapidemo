@@ -1,18 +1,27 @@
 package co.istad.productapidemo.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
+
+@Entity(name = "product_tbl")
 public class Product {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String description;
-    private float price;
-    private int userId;
+    private Float price;
+    private Integer userId;
+    private Integer categoryId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

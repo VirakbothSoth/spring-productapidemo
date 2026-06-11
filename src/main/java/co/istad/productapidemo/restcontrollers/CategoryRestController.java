@@ -10,29 +10,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/categories")
+@RequestMapping("api/v1/categories")
 public class CategoryRestController {
-    // just injecting service
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryResponse> getCategories() {
-        return categoryService.findAllCategories();
-    }
-
-    // find category by id
-    @GetMapping("/{id}")
-    public CategoryResponse getCategoryById(@PathVariable Integer id) {
-        return categoryService.findCategoryById(id);
+    List<CategoryResponse> getCategories() {
+        return categoryService.findAll();
     }
 
     @PostMapping
-    public CategoryResponse createCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.createCategory(categoryRequest);
+    public CategoryResponse createCategory(@Valid @RequestBody CategoryRequest request){
+        return categoryService.createCategory(request);
     }
 
-    @PatchMapping("/{id}")
-    public CategoryResponse updateCategory(@PathVariable Integer id, @RequestBody UpdateCategoryRequest request) {
-        return categoryService.updateCategory(id, request);
+    @DeleteMapping("/{id}")
+    public Boolean deleteCategory(@PathVariable Integer id) {
+        return categoryService.deleteCategory(id);
     }
 }

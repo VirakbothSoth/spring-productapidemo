@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,30 +38,28 @@ public class ProductServiceImpl implements ProductService {
         var product = mapToEntity(request);
         product.setUserId(1);
         product.setId(nextId++);
-        return mapToResponse(productRepository.createProduct(product));
+        return mapToResponse(productRepository.save(product));
     }
 
     @Override
     public List<ProductResponse> findAllProducts() {
-        return productRepository.getProductList().stream()
+        return productRepository.findAll().stream()
                 .map(this::mapToResponse).toList();
     }
 
     @Override
     public ProductResponse findProductById(Integer id) {
-        var product = productRepository.findProductById(id);
-        if (product == null) {
-            return null;
-        }
+        var product = productRepository
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Cannot find prod with this ID"));
         return mapToResponse(product);
     }
 
     @Override
     public ProductResponse updateProduct(Integer id, UpdateProductRequest request) {
-        var exitingProduct = productRepository.findProductById(id);
-        if (exitingProduct == null) {
-            return null;
-        }
+        var exitingProduct = productRepository
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Cannot find prod with this ID"));
         if (request.name() != null) {
             exitingProduct.setName(request.name());
         }
@@ -70,12 +69,17 @@ public class ProductServiceImpl implements ProductService {
         if (request.price() != null) {
             exitingProduct.setPrice(request.price());
         }
-        productRepository.updateProduct(exitingProduct);
+        productRepository.save(exitingProduct);
         return mapToResponse(exitingProduct);
     }
 
     @Override
     public boolean deleteProduct(Integer id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
+        }
+
         return false;
     }
 }
