@@ -4,6 +4,7 @@ import co.istad.productapidemo.dto.*;
 import co.istad.productapidemo.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +20,20 @@ public class CategoryRestController {
         return categoryService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public CategoryResponse getCategoryById(@PathVariable Integer id) {
+        return categoryService.findCategoryById(id);
+    }
+
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse createCategory(@Valid @RequestBody CategoryRequest request){
         return categoryService.createCategory(request);
     }
 
     @DeleteMapping("/{id}")
-    public Boolean deleteCategory(@PathVariable Integer id) {
-        return categoryService.deleteCategory(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable Integer id) {
+        categoryService.deleteCategory(id);
     }
 }

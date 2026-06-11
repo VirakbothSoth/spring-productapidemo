@@ -1,14 +1,15 @@
 spring:
   application:
     name: product-api-demo
+  # jpa, postgres
   datasource:
     url: ${DB_URL}
-    username: ${DB_USERNAME}
+    username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: update     # create | update | none
+    show-sql: true          # log generated SQL
     properties:
       hibernate:
         format_sql: true

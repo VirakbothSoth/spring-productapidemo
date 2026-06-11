@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-
 @Entity(name = "product_tbl")
 public class Product {
     @Id
@@ -19,7 +18,6 @@ public class Product {
     private String description;
     private Float price;
     private Integer userId;
-    private Integer categoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

@@ -8,12 +8,14 @@ import java.util.List;
 
 // for the loosely coupling design
 // this interface will be implemented by other class
-@Service
 public interface CategoryService {
     CategoryResponse createCategory(CategoryRequest request);
     CategoryResponse updateCategory(CategoryRequest request);
-    Boolean deleteCategory(Integer id);
+    void deleteCategory(Integer id);
+    // get all with Pagination ( follow products sample )
+    // soft delete category ( changing the value of isDeleted )
     List<CategoryResponse> findAll();
-    CategoryResponse findById(Integer id);
+    CategoryResponse findCategoryById(Integer id);
     List<CategoryResponse> findByName(String name);
+
 }
