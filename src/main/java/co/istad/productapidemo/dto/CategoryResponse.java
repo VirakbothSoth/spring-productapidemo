@@ -4,6 +4,7 @@ import lombok.Builder;
 public record CategoryResponse(
         Integer id,
         String name,
-        String description
+        String description,
+        Boolean isDeleted
 ) {
 }

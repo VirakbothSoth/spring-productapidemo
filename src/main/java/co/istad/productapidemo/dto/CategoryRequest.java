@@ -9,6 +9,5 @@ public record CategoryRequest(
         String name,
         @Size(min = 1, max = 255)
         String description
-
 ) {
 }

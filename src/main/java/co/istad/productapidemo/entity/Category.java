@@ -17,7 +17,9 @@ public class Category {
     private Integer id;
     private String name;
     private String description;
-    private Boolean isDeleted;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;
