@@ -4,9 +4,9 @@
       container_name: postgres_db
       restart: always
       environment:
-        POSTGRES_USER: ${DB_USER:-james}
-        POSTGRES_PASSWORD: ${DB_PASSWORD:-123}
-        POSTGRES_DB: ${DB_NAME:-james_db}
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: sancluvspostgres
+        POSTGRES_DB: ecom_db
       ports:
         - "5433:5432"
       volumes:

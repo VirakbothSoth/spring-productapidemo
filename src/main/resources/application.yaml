@@ -3,13 +3,15 @@ spring:
     name: product-api-demo
   # jpa, postgres
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/ecom_db
+    username: postgres
+    password: sancluvspostgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update     # create | update | none
     show-sql: true          # log generated SQL
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true

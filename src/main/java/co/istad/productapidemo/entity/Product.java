@@ -3,6 +3,9 @@ package co.istad.productapidemo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +22,16 @@ public class Product {
     private Float price;
     private Integer userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "product_tags",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
+    @ManyToOne
+    // determined foreign key
     @JoinColumn(name = "category_id")
     private Category category;
 }
