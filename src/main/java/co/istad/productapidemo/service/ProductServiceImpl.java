@@ -1,21 +1,23 @@
 package co.istad.productapidemo.service;
 
-import co.istad.productapidemo.dto.ProductRequest;
-import co.istad.productapidemo.dto.ProductResponse;
-import co.istad.productapidemo.dto.UpdateProductRequest;
-import co.istad.productapidemo.entity.Product;
+import co.istad.productapidemo.dto.product.ProductRequest;
+import co.istad.productapidemo.dto.product.ProductResponse;
+import co.istad.productapidemo.dto.product.UpdateProductRequest;
+import co.istad.productapidemo.entity.Tag;
 import co.istad.productapidemo.mapper.ProductMapper;
+import co.istad.productapidemo.repository.CategoryRepository;
 import co.istad.productapidemo.repository.ProductRepository;
+import co.istad.productapidemo.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultLifecycleProcessor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.core.support.RepositoryMethodInvocationListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,8 @@ public class ProductServiceImpl implements ProductService {
     //private final ProductRepositoryOld productRepositoryOld;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public List<ProductResponse> findAllProducts() {
@@ -46,12 +50,18 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse createProduct(ProductRequest request) {
         // create entity product from the request
         var product = productMapper.mapToProduct(request);
-        // set static userID
-        product.setUserId(1);
-        // insert the data to the table only need to
-        // repository.save(entity) = insert
-        return productMapper.mapToResponse(productRepository.save(product));
+        var category = categoryRepository.findById(request.categoryId())
+                .orElseThrow(() -> new NoSuchElementException("Category with ID = " + request.categoryId() + " not found"));
+        product.setCategory(category);
+        if (request.tagIds() != null & !request.tagIds().isEmpty()) {
+            Set<Tag> tags = request.tagIds().stream()
+                    .map(tagId -> tagRepository.getReferenceById(tagId))
+                    .collect(Collectors.toSet());
 
+            product.setTags(tags);
+        }
+
+        return productMapper.mapToResponse(productRepository.save(product));
     }
 
 

@@ -3,6 +3,7 @@ package co.istad.productapidemo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,12 @@ public class Product {
     private Integer id;
     private String name;
     private String description;
-    private Float price;
+    private BigDecimal price; // unit price
+    private Boolean isAvailable=true;
+    private Boolean isDeleted=false; // soft delete
+    private String slug; // for seo purpose
+    private String thumbnail; // for product image
+    private Integer qty;
     private Integer userId;
 
     @ManyToMany

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Unnamed" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <option name="ALTERNATIVE_JRE_PATH" value="25" />
+  <configuration default="false" name="ProductApiDemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="temurin-25" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <module name="product-api-demo.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="co.istad.productapidemo.ProductApiDemoApplication" />

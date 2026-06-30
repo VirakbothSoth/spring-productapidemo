@@ -1,7 +1,7 @@
 package co.istad.productapidemo.mapper;
 
-import co.istad.productapidemo.dto.ProductRequest;
-import co.istad.productapidemo.dto.ProductResponse;
+import co.istad.productapidemo.dto.product.ProductRequest;
+import co.istad.productapidemo.dto.product.ProductResponse;
 import co.istad.productapidemo.entity.Product;
 import co.istad.productapidemo.entity.Tag;
 import org.mapstruct.Mapper;

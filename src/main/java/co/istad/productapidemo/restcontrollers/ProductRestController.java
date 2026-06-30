@@ -1,16 +1,14 @@
 package co.istad.productapidemo.restcontrollers;
 
-import co.istad.productapidemo.dto.ProductRequest;
-import co.istad.productapidemo.dto.ProductResponse;
-import co.istad.productapidemo.dto.UpdateProductRequest;
+import co.istad.productapidemo.dto.product.ProductRequest;
+import co.istad.productapidemo.dto.product.ProductResponse;
+import co.istad.productapidemo.dto.product.UpdateProductRequest;
 import co.istad.productapidemo.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
