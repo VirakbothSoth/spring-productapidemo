@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 public class UserRestController {
     private final UserService userService;

@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/tags")
+@RequestMapping("api/v1/tags")
 @RequiredArgsConstructor
 public class TagRestController {
     private final TagService tagService;
