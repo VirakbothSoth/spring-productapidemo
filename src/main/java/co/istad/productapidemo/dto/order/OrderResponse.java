@@ -9,15 +9,14 @@ import java.util.List;
 import java.util.UUID;
 
 public record OrderResponse(
-    UUID id,
-    Integer customerId,
-    String productName,
-    String address,
-    String remarks,
-    BigDecimal discount,
-    LocalDateTime orderedAt,
-    OrderStatus status,
-    User customer,
-    List<OrderItemResponse> items
+        UUID id,
+        Integer customerId,
+        String customerName,
+        OrderStatus status ,
+        BigDecimal subTotal,
+        BigDecimal discount,
+        BigDecimal total ,
+        LocalDateTime orderedAt,
+        List<OrderItemResponse> items
 ) {
 }
