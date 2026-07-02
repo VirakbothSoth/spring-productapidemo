@@ -12,11 +12,10 @@ public record OrderResponse(
         UUID id,
         Integer customerId,
         String customerName,
-        OrderStatus status ,
+        OrderStatus status,
         BigDecimal subTotal,
         BigDecimal discount,
-        BigDecimal total ,
+        BigDecimal total,
         LocalDateTime orderedAt,
         List<OrderItemResponse> items
-) {
-}
+) { }

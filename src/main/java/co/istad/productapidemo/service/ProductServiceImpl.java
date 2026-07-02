@@ -41,8 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductResponse> findAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable)
-                .map(productMapper::mapToResponse);
+        return productRepository.findAll(pageable).map(productMapper::mapToResponse);
     }
 
 
@@ -50,9 +49,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse createProduct(ProductRequest request) {
         // create entity product from the request
         var product = productMapper.mapToProduct(request);
+        product.setIsAvailable(true);
+
         var category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new NoSuchElementException("Category with ID = " + request.categoryId() + " not found"));
         product.setCategory(category);
+
         if (request.tagIds() != null & !request.tagIds().isEmpty()) {
             Set<Tag> tags = request.tagIds().stream()
                     .map(tagId -> tagRepository.getReferenceById(tagId))

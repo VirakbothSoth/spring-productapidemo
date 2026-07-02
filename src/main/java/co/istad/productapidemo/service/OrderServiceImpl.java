@@ -4,6 +4,7 @@ import co.istad.productapidemo.dto.order.CreateOrderRequest;
 import co.istad.productapidemo.dto.order.OrderResponse;
 import co.istad.productapidemo.entity.Order;
 import co.istad.productapidemo.entity.OrderLine;
+import co.istad.productapidemo.entity.OrderStatus;
 import co.istad.productapidemo.mapper.OrderMapper;
 import co.istad.productapidemo.repository.OrderRepository;
 import co.istad.productapidemo.repository.ProductRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponse createOrder(CreateOrderRequest request) {
         Order order = orderMapper.mapToEntity(request);
+        order.setOrderedAt(LocalDateTime.now());
+        order.setStatus(OrderStatus.PENDING);
 
         var customer = userRepository.findById(request.customerId())
                 .orElseThrow(() ->
@@ -44,10 +48,10 @@ public class OrderServiceImpl implements OrderService {
                     product.setQty(product.getQty() - item.qty());
 
                     var orderLine = new OrderLine();
-                    orderLine.setProduct(product);
-                    orderLine.setUnitPrice(product.getPrice());
-                    orderLine.setQty(item.qty());
-                    orderLine.setOrder(order);
+                        orderLine.setProduct(product);
+                        orderLine.setUnitPrice(product.getPrice());
+                        orderLine.setQty(item.qty());
+                        orderLine.setOrder(order);
                     return orderLine;
                 }).toList();
                 order.setItems(orderLines);
@@ -57,10 +61,22 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal subTotal = orderLines.stream()
                 .map(line -> line.getUnitPrice().multiply(
                         BigDecimal.valueOf(line.getQty())))
-                        .reduce(BigDecimal.ZERO, (a,b)->(a.add(b)));
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal total = subTotal.subtract(discount);
 
         Order savedOrder = orderRepository.save(order);
-        return null;
+        return new OrderResponse(
+                savedOrder.getId(),
+                customer.getId(),
+                customer.getEmail(),
+                savedOrder.getStatus(),
+                subTotal,
+                discount,
+                total,
+                savedOrder.getOrderedAt(),
+                null
+        );
     }
 
     @Override
@@ -70,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderResponse> getAllOrders() {
-        return List.of();
+        return orderRepository.findAll().stream().map(orderMapper::mapToResponse).toList();
     }
 
     @Override

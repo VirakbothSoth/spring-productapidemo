@@ -9,5 +9,4 @@ public record OrderItemResponse(
         Integer qty,
         BigDecimal unitPrice,
         BigDecimal lineTotal
-) {
-}
+) { }

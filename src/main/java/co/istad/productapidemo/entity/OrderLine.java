@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Entity(name = "orderline_tbl")
 public class OrderLine {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_by")
