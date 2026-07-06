@@ -1,3 +1,8 @@
+file:
+  client-path: /files
+  storage-location: /Users/kk/Engineering/ite-images/
+  base-url: http://localhost:${server.port}/${file.client-path}/
+
 spring:
   application:
     name: product-api-demo
