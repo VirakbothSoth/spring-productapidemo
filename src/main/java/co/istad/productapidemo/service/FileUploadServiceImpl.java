@@ -7,6 +7,9 @@ import co.istad.productapidemo.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,8 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,22 +39,38 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public List<FileResponse> uploadMultipleFiles(List<MultipartFile> files) {
-        return List.of();
+        return files.stream().map(this::uploadFile).collect(Collectors.toList());
     }
 
     @Override
     public FileResponse findByName(String name) {
-        return null;
+        return fileRepository.findByName(name)
+                .orElseThrow(() -> new NoSuchElementException("File with name " + name + " not found"));
     }
 
     @Override
     public Page<FileResponse> findAll(int pageNumber, int pageSize) {
-        return null;
+        Sort sortById = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortById);
+        return fileRepository.findAll(pageable)
+                .map(fileUploadMapper::mapToResponse);
     }
 
     @Override
     public void deleteByName(String name) {
-
+        var file = fileRepository.findByName(name).orElseThrow(()->new NoSuchElementException("File with name "+name+" not found"));
+        fileRepository.delete(file);
+        String fullPath = fileStorageLocation+file.getName()+"."+file.getExtension();
+        Path pathToDelete = Paths.get(fullPath);
+        try {
+            var result = Files.deleteIfExists(pathToDelete);
+            if (!result) {
+                throw new NoSuchElementException("File with name "+name+" not found");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new NoSuchElementException("File with name "+name+" not found");
+        }
     }
 
     private FileResponse uploadFile(MultipartFile file) {

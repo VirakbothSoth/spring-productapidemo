@@ -4,6 +4,10 @@ file:
   base-url: http://localhost:${server.port}/${file.client-path}/
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
   application:
     name: product-api-demo
   # jpa, postgres
