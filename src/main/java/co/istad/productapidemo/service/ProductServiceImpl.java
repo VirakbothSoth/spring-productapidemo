@@ -1,8 +1,11 @@
 package co.istad.productapidemo.service;
 
+import co.istad.productapidemo.dto.ProductFilter;
 import co.istad.productapidemo.dto.product.ProductRequest;
 import co.istad.productapidemo.dto.product.ProductResponse;
 import co.istad.productapidemo.dto.product.UpdateProductRequest;
+import co.istad.productapidemo.entity.Product;
+import co.istad.productapidemo.entity.ProductSpecification;
 import co.istad.productapidemo.entity.Tag;
 import co.istad.productapidemo.mapper.ProductMapper;
 import co.istad.productapidemo.repository.CategoryRepository;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +44,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> findAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(productMapper::mapToResponse);
+    public Page<ProductResponse> findAllProducts(Pageable pageable, ProductFilter filter) {
+        Specification<Product> spec = ProductSpecification.filterProduct(filter);
+        return productRepository.findAll(spec,pageable).map(productMapper::mapToResponse);
     }
 
 
@@ -57,7 +62,9 @@ public class ProductServiceImpl implements ProductService {
 
         if (request.tagIds() != null & !request.tagIds().isEmpty()) {
             Set<Tag> tags = request.tagIds().stream()
-                    .map(tagId -> tagRepository.getReferenceById(tagId))
+                    .map(tagId -> tagRepository.findById(tagId).orElseThrow(()->
+                            new NoSuchElementException("Tag with ID = "+tagId+" not found")
+                    ))
                     .collect(Collectors.toSet());
 
             product.setTags(tags);
