@@ -3,7 +3,8 @@ package co.istad.productapidemo.restcontrollers;
 import co.istad.productapidemo.dto.file.FileResponse;
 import co.istad.productapidemo.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,7 @@ import java.util.List;
 public class FileUploadRestController {
     private final FileUploadService fileUploadService;
 
-    @PostMapping(consumes = MediaType.)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FileResponse uploadFile(@RequestPart MultipartFile file) {
         return fileUploadService.upload(file);
     }
@@ -31,8 +32,9 @@ public class FileUploadRestController {
         return fileUploadService.findAll(pageNumber,pageSize);
     }
 
-    @ResponseStatus(Http)
-    public void deleteFile(String fileName) {
-
+    @DeleteMapping("/{fileName}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFile(@PathVariable String fileName) {
+        fileUploadService.deleteByName(fileName);
     }
 }

@@ -18,8 +18,8 @@ public class ProductRestController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<ProductResponse> getProducts(ProductFilter filter, Page pageable) {
-        return productService.findAllProducts(filter, pageable);
+    public Page<ProductResponse> getProducts(ProductFilter filter, Pageable pageable) {
+        return productService.findAllProducts(pageable, filter);
     }
 
     // find product by id
