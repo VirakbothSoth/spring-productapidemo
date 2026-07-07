@@ -17,10 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,8 +42,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public FileResponse findByName(String name) {
-        return fileRepository.findByName(name)
+        var file = fileRepository.findByName(name)
                 .orElseThrow(() -> new NoSuchElementException("File with name " + name + " not found"));
+        return fileUploadMapper.mapToResponse(file);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
         String filename = name+"."+ext;
         // 3. construct path
-        Path path = Paths.get(fileStorageLocation+name);
+        Path path = Paths.get(fileStorageLocation+filename);
         // 4. (save) copy the file to local machine
         try {
             Files.copy(file.getInputStream(),path);
