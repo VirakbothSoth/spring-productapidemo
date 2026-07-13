@@ -1,7 +1,6 @@
 package co.istad.productapidemo.dto.order;
 
 import co.istad.productapidemo.entity.OrderStatus;
-import co.istad.productapidemo.entity.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

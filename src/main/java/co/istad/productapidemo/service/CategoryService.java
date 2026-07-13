@@ -5,9 +5,6 @@ import co.istad.productapidemo.dto.CategoryResponse;
 import co.istad.productapidemo.dto.UpdateCategoryRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 // for the loosely coupling design
 // this interface will be implemented by other class

@@ -4,7 +4,6 @@ import co.istad.productapidemo.dto.user.CreateUserRequest;
 import co.istad.productapidemo.dto.user.UserResponse;
 import co.istad.productapidemo.entity.Profile;
 import co.istad.productapidemo.mapper.UserMapper;
-import co.istad.productapidemo.repository.ProfileRepository;
 import co.istad.productapidemo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
 
     @Override
     public UserResponse createUser(CreateUserRequest request) {

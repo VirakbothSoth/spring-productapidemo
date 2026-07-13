@@ -99,15 +99,8 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.mapToResponse(existingProduct);
     }
 
-
-
-    // TODO: make it like we delete in the category
     @Override
     public boolean deleteProduct(Integer id) {
-        // find if the product exist
-        // if it's we delete it and return true
-        // else return false
-
         if(productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return true;
