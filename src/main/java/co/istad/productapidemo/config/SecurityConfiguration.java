@@ -22,10 +22,16 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain config(HttpSecurity http) {
         http.csrf(AbstractHttpConfigurer::disable)
+
                 .formLogin(AbstractHttpConfigurer::disable)
+
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+
                 .httpBasic(Customizer.withDefaults())
+
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                                 .requestMatchers("/scalar/**", "/v3/api-docs/**").permitAll()

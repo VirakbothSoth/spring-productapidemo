@@ -1,9 +1,20 @@
+keycloak:
+  server-url: http://localhost:9999
+  realm: spring-app-realm
+  client-id: spring-boot-app
+  client-secret: H9suB1PQfzvvJgEYjXqNuSqU2cxubSrY
+
 file:
   client-path: /files
   storage-location: /Users/kk/Engineering/ite-images/
   base-url: http://localhost:${server.port}/${file.client-path}/
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9999/realms/spring-app-realm
   servlet:
     multipart:
       max-file-size: 10MB
