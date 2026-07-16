@@ -8,4 +8,5 @@ import java.util.List;
 public interface UserService {
     UserResponse createUser(CreateUserRequest request);
     List<UserResponse> getAllUsers();
+    UserResponse getUserByKeycloakId(String keycloakId);
 }
