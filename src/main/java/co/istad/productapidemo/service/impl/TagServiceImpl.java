@@ -1,9 +1,10 @@
-package co.istad.productapidemo.service;
+package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.dto.TagRequest;
 import co.istad.productapidemo.dto.TagResponse;
 import co.istad.productapidemo.mapper.TagMapper;
 import co.istad.productapidemo.repository.TagRepository;
+import co.istad.productapidemo.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

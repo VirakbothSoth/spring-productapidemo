@@ -1,4 +1,4 @@
-package co.istad.productapidemo.service;
+package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.dto.order.CreateOrderRequest;
 import co.istad.productapidemo.dto.order.OrderResponse;
@@ -9,6 +9,7 @@ import co.istad.productapidemo.mapper.OrderMapper;
 import co.istad.productapidemo.repository.OrderRepository;
 import co.istad.productapidemo.repository.ProductRepository;
 import co.istad.productapidemo.repository.UserRepository;
+import co.istad.productapidemo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

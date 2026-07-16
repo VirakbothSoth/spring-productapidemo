@@ -1,4 +1,4 @@
-package co.istad.productapidemo.service;
+package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.dto.ProductFilter;
 import co.istad.productapidemo.dto.product.ProductRequest;
@@ -11,6 +11,7 @@ import co.istad.productapidemo.mapper.ProductMapper;
 import co.istad.productapidemo.repository.CategoryRepository;
 import co.istad.productapidemo.repository.ProductRepository;
 import co.istad.productapidemo.repository.TagRepository;
+import co.istad.productapidemo.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

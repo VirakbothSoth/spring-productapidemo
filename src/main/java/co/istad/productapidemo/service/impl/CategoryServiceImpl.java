@@ -1,4 +1,4 @@
-package co.istad.productapidemo.service;
+package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.advisor.ResourceAlreadyExistException;
 import co.istad.productapidemo.dto.CategoryRequest;
@@ -7,6 +7,7 @@ import co.istad.productapidemo.dto.UpdateCategoryRequest;
 import co.istad.productapidemo.entity.Category;
 import co.istad.productapidemo.mapper.CategoryMapper;
 import co.istad.productapidemo.repository.CategoryRepository;
+import co.istad.productapidemo.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

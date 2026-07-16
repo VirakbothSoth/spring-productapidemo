@@ -1,10 +1,11 @@
-package co.istad.productapidemo.service;
+package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.dto.user.CreateUserRequest;
 import co.istad.productapidemo.dto.user.UserResponse;
 import co.istad.productapidemo.entity.Profile;
 import co.istad.productapidemo.mapper.UserMapper;
 import co.istad.productapidemo.repository.UserRepository;
+import co.istad.productapidemo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

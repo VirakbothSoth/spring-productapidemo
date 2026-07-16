@@ -1,9 +1,10 @@
-package co.istad.productapidemo.service;
+package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.dto.file.FileResponse;
 import co.istad.productapidemo.entity.FileUpload;
 import co.istad.productapidemo.mapper.FileUploadMapper;
 import co.istad.productapidemo.repository.FileRepository;
+import co.istad.productapidemo.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
