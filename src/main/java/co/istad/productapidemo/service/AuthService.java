@@ -8,4 +8,5 @@ import co.istad.productapidemo.dto.user.UserUpdateRequest;
 public interface AuthService {
     RegisterResponse register(RegisterRequest req);
     UserResponse updateUser(String keycloakId, UserUpdateRequest request);
+    void forgotPassword(String email);
 }
