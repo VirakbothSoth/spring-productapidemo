@@ -2,6 +2,8 @@ package co.istad.productapidemo.service.impl;
 
 import co.istad.productapidemo.dto.auth.RegisterRequest;
 import co.istad.productapidemo.dto.auth.RegisterResponse;
+import co.istad.productapidemo.dto.user.UserResponse;
+import co.istad.productapidemo.dto.user.UserUpdateRequest;
 import co.istad.productapidemo.entity.Profile;
 import co.istad.productapidemo.entity.User;
 import co.istad.productapidemo.mapper.UserMapper;
@@ -112,5 +114,63 @@ public class AuthServiceImpl implements AuthService {
 
         user.setProfile(profile);
         return userMapper.toRegisterResponse(userRepository.save(user));
+    }
+
+    // TODO
+    // update user profile, only the profile owner can update
+    @Override
+    public UserResponse updateUser(String keycloakId, UserUpdateRequest request) {
+        var oldUser = userRepository.findByKeycloakId(keycloakId)
+                .orElseThrow(()->new NoSuchElementException("No user with id " + keycloakId));
+        var oldProfile = oldUser.getProfile();
+        if(request.firstName()!=null)
+            oldProfile.setFirstName(request.firstName());
+        if(request.lastName()!=null)
+            oldProfile.setLastName(request.lastName());
+        if(request.gender()!=null)
+            oldProfile.setGender(request.gender());
+        if(request.biography()!=null)
+            oldProfile.setBio(request.biography());
+        oldUser.setProfile(oldProfile);
+        var updatedUser = userRepository.save(oldUser);
+
+        try {
+            var userRes = keycloak.realm(realm).users().get(keycloakId);
+            var userRep = userRes.toRepresentation();
+            if(request.firstName()!=null)
+                userRep.setFirstName(request.firstName());
+            if(request.lastName()!=null)
+                userRep.setLastName(request.lastName());
+            Map<String, List<String>> attri = (userRep.getAttributes()!=null ?
+                    new HashMap<>(userRep.getAttributes()) : new HashMap<>());
+            if (request.gender()!=null)
+                attri.put("gender",List.of(request.gender()));
+            if (request.biography()!=null)
+                attri.put("biography",List.of(request.biography()));
+            userRep.setAttributes(attri);
+            userRes.update(userRep);
+            return userMapper.mapToResponse(updatedUser);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            log.error("Error updating user", ex);
+            throw new RuntimeException("Error updating user");
+        }
+    }
+
+    public void forgotPassword(String email) {
+        try {
+            var listUserRepresentation = keycloak.realm(realm).users().searchByEmail(email, true);
+            if (listUserRepresentation.isEmpty()) {
+                log.warn("Sending reset password to no-existant user with email {}", email);
+                return ;
+            }
+
+            var userRes = listUserRepresentation.getFirst().getId();
+
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            log.error("Error saving user in keycloak", ex);
+            throw new RuntimeException("Error saving user in keycloak");
+        }
     }
 }
