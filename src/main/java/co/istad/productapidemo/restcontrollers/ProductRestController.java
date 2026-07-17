@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class ProductRestController {
     private final ProductService productService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('product:view')")
     public Page<ProductResponse> getProducts(ProductFilter filter, Pageable pageable) {
         return productService.findAllProducts(pageable, filter);
     }
@@ -29,6 +31,7 @@ public class ProductRestController {
         return productService.findProductById(id);
     }
 
+    @PreAuthorize("hasAuthority('product:create')")
     @PostMapping
     public ProductResponse createProduct(@Valid @RequestBody ProductRequest request){
         return productService.createProduct(request);
@@ -40,5 +43,4 @@ public class ProductRestController {
     public ProductResponse updateProduct(@PathVariable Integer id, @RequestBody UpdateProductRequest request){
         return productService.updateProduct(id, request);
     }
-
 }
