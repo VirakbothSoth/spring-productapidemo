@@ -137,16 +137,20 @@ public class AuthServiceImpl implements AuthService {
         try {
             var userRes = keycloak.realm(realm).users().get(keycloakId);
             var userRep = userRes.toRepresentation();
+
             if(request.firstName()!=null)
                 userRep.setFirstName(request.firstName());
             if(request.lastName()!=null)
                 userRep.setLastName(request.lastName());
+
             Map<String, List<String>> attri = (userRep.getAttributes()!=null ?
                     new HashMap<>(userRep.getAttributes()) : new HashMap<>());
+
             if (request.gender()!=null)
                 attri.put("gender",List.of(request.gender()));
             if (request.biography()!=null)
                 attri.put("biography",List.of(request.biography()));
+
             userRep.setAttributes(attri);
             userRes.update(userRep);
             return userMapper.mapToResponse(updatedUser);
@@ -157,16 +161,20 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
     public void forgotPassword(String email) {
         try {
             var listUserRepresentation = keycloak.realm(realm).users().searchByEmail(email, true);
             if (listUserRepresentation.isEmpty()) {
-                log.warn("Sending reset password to no-existant user with email {}", email);
+                log.warn("Sending reset password to non-existant user with email {}", email);
                 return ;
             }
 
-            var userRes = listUserRepresentation.getFirst().getId();
+            var kcUserId = listUserRepresentation.getFirst().getId();
+            var userRes = keycloak.realm(realm).users().get(kcUserId);
 
+            log.info("Sending reset password to user with id {}", kcUserId);
+            userRes.executeActionsEmail(List.of("UPDATE_PASSWORD"));
         } catch(Exception ex) {
             ex.printStackTrace();
             log.error("Error saving user in keycloak", ex);
